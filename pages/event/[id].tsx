@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import WithNavigationBar from "layouts/WithNavigationBar";
+import Link from "next/link";
 import React, { useState } from "react";
 import tw from "twin.macro";
 
@@ -36,12 +37,14 @@ const Event: React.FC<Props> = () => {
             <WithNavigationBar>
                 <div className="absolute top-0 bottom-0 right-0 left-0">
                     <div className="max-w-2xl  mx-auto flex flex-col gap-3 bg-white text-black p-5 overflow-y-auto pb-[5.25rem]">
-                        <div className="flex mt-5">
-                            <FontAwesomeIcon
-                                className="w-3"
-                                icon={faChevronLeft}
-                            />
-                        </div>
+                        <Link href={"/"}>
+                            <div className="flex mt-5">
+                                <FontAwesomeIcon
+                                    className="w-3"
+                                    icon={faChevronLeft}
+                                />
+                            </div>
+                        </Link>
                         <div className="w-full">
                             <img
                                 className="w-full object-cover h-[12rem] rounded-xl"
@@ -93,7 +96,7 @@ const Event: React.FC<Props> = () => {
                             ) : (
                                 <Button
                                     onClick={() => setIsJoin((pre) => !pre)}
-                                    className="bg-primary text-white"
+                                    className="bg-primary text-white shadow-lg"
                                 >
                                     <div>
                                         <FontAwesomeIcon
