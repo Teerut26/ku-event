@@ -11,22 +11,28 @@ import WithNavigationBar from "layouts/WithNavigationBar";
 import Link from "next/link";
 import React, { useState } from "react";
 import tw from "twin.macro";
+import { motion, AnimatePresence } from "framer-motion";
+import { css } from "@emotion/css";
 
 interface Props {}
 
-const Button = styled.button`
+const Button = styled(motion.button)`
     ${tw`w-full flex flex-col items-center gap-2 px-3 py-5 rounded-xl`}
 `;
 
-const CardAuthor = styled.div`
+const ButtonStatus = css`
+    ${tw`text-white cursor-not-allowed absolute top-0 bottom-0 right-0 left-0`}
+`;
+
+const CardAuthor = styled(motion.div)`
     ${tw`p-5 flex items-center gap-3 bg-[#F4F5F7] rounded-xl`}
 `;
 
-const DetailEvent = styled.div`
+const DetailEvent = styled(motion.div)`
     ${tw`flex flex-col gap-3`}
 `;
 
-const DetailChild = styled.div`
+const DetailChild = styled(motion.div)`
     ${tw`flex items-start gap-1 font-bold`}
 `;
 
@@ -79,34 +85,50 @@ const Event: React.FC<Props> = () => {
                             veritatis deleniti fugit accusantium culpa .
                         </div>
 
-                        <div className="flex gap-2 p-5">
-                            {isJoin ? (
-                                <Button
-                                    onClick={() => setIsJoin((pre) => !pre)}
-                                    className="bg-primary/50 text-white cursor-not-allowed"
-                                >
-                                    <div>
-                                        <FontAwesomeIcon
-                                            className="w-10"
-                                            icon={faCircleCheck}
-                                        />
-                                    </div>
-                                    <div>คุณได้เข้าร่วมแล้ว</div>
-                                </Button>
-                            ) : (
-                                <Button
-                                    onClick={() => setIsJoin((pre) => !pre)}
-                                    className="bg-primary text-white shadow-lg"
-                                >
-                                    <div>
-                                        <FontAwesomeIcon
-                                            className="w-10"
-                                            icon={faCircleCheck}
-                                        />
-                                    </div>
-                                    <div>ต้องการเข้าร่วม</div>
-                                </Button>
-                            )}
+                        <div className="p-5">
+                            <div className="relative h-[7rem]">
+                                <AnimatePresence>
+                                    {isJoin ? (
+                                        <Button
+                                            key={isJoin ? 1 : 0}
+                                            initial={{ x: 300, opacity: 0 }}
+                                            animate={{ x: 0, opacity: 1 }}
+                                            exit={{ x: -300, opacity: 0 }}
+                                            onClick={() =>
+                                                setIsJoin((pre) => !pre)
+                                            }
+                                            className={`bg-primary/50 ${css(ButtonStatus)}`}
+                                        >
+                                            <div>
+                                                <FontAwesomeIcon
+                                                    className="w-10"
+                                                    icon={faCircleCheck}
+                                                />
+                                            </div>
+                                            <div>คุณได้เข้าร่วมแล้ว</div>
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            key={isJoin ? 1 : 0}
+                                            initial={{ x: 300, opacity: 0 }}
+                                            animate={{ x: 0, opacity: 1 }}
+                                            exit={{ x: -300, opacity: 0 }}
+                                            onClick={() =>
+                                                setIsJoin((pre) => !pre)
+                                            }
+                                            className={`bg-primary ${css(ButtonStatus)}`}
+                                        >
+                                            <div>
+                                                <FontAwesomeIcon
+                                                    className="w-10"
+                                                    icon={faCircleCheck}
+                                                />
+                                            </div>
+                                            <div>ต้องการเข้าร่วม</div>
+                                        </Button>
+                                    )}
+                                </AnimatePresence>
+                            </div>
                         </div>
 
                         <CardAuthor>
