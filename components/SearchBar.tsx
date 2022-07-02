@@ -3,11 +3,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
-const SeachBar = styled.input`
-    ::placeholder {
-        color: #e6e6e6;
-    }
-`;
+const SeachBar = styled.input``;
 
 interface Props {}
 
@@ -16,7 +12,7 @@ const Search: React.FC<Props> = () => {
         <>
             <SeachBar
                 placeholder="Search"
-                className="input input-lg w-full bg-green-500 text-white font-bold text-2xl rounded-[1.3rem]"
+                className="input shadow-md input-lg w-full bg-base-300 font-bold text-2xl rounded-[1.3rem] placeholder:text-primary-content/80 text-primary-content"
             />
         </>
     );

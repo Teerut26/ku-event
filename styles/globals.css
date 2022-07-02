@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ::-webkit-scrollbar{
+	width: 6px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track-piece{
+	background-color: rgba(255, 255, 255, 0.455);
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb{
+	background-color: #cbcbcbbf;
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+	background-color: #909090;
+} */
+* {
+    font-family: "Prompt", sans-serif;
+}
