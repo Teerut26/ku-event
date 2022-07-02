@@ -21,7 +21,7 @@ const Button = styled(motion.button)`
 `;
 
 const ButtonStatus = css`
-    ${tw`text-white cursor-not-allowed absolute top-0 bottom-0 right-0 left-0`}
+    ${tw`text-white absolute top-0 bottom-0 right-0 left-0`}
 `;
 
 const CardAuthor = styled(motion.div)`
@@ -97,7 +97,7 @@ const Event: React.FC<Props> = () => {
                                             onClick={() =>
                                                 setIsJoin((pre) => !pre)
                                             }
-                                            className={`bg-primary/50 ${css(ButtonStatus)}`}
+                                            className={`bg-primary/50 ${css(ButtonStatus)} cursor-not-allowed `}
                                         >
                                             <div>
                                                 <FontAwesomeIcon
