@@ -9,9 +9,9 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import WithNavigationBar from "layouts/WithNavigationBar";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import tw from "twin.macro";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useViewportScroll } from "framer-motion";
 import { css } from "@emotion/css";
 
 interface Props {}
@@ -38,6 +38,7 @@ const DetailChild = styled(motion.div)`
 
 const Event: React.FC<Props> = () => {
     const [isJoin, setIsJoin] = useState<boolean>(false);
+
     return (
         <>
             <WithNavigationBar>
@@ -51,6 +52,7 @@ const Event: React.FC<Props> = () => {
                                 />
                             </div>
                         </Link>
+
                         <div className="w-full">
                             <img
                                 className="w-full object-cover h-[12rem] rounded-xl"
@@ -76,14 +78,19 @@ const Event: React.FC<Props> = () => {
                             Lorem ipsum dolor sit amet.
                         </div>
 
-                        <div className="text-[#5B5B5B]">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="text-[#5B5B5B]"
+                        >
                             Lorem ipsum dolor sit amet consectetur adipisicing
                             elit. Laborum ipsam facilis iure, libero ratione
                             dolor repellat? Maiores sit minus excepturi error
                             corporis eveniet quibusdam vero voluptatibus libero
                             pariatur distinctio iure ipsa nam vel magni
                             veritatis deleniti fugit accusantium culpa .
-                        </div>
+                        </motion.div>
 
                         <div className="p-5">
                             <div className="relative h-[7rem]">
@@ -91,13 +98,27 @@ const Event: React.FC<Props> = () => {
                                     {isJoin ? (
                                         <Button
                                             key={isJoin ? 1 : 0}
-                                            initial={{ x: 300, opacity: 0 }}
-                                            animate={{ x: 0, opacity: 1 }}
-                                            exit={{ x: -300, opacity: 0 }}
+                                            initial={{
+                                                x: 300,
+                                                opacity: 0,
+                                                scale: 0.9,
+                                            }}
+                                            animate={{
+                                                x: 0,
+                                                opacity: 1,
+                                                scale: 1,
+                                            }}
+                                            exit={{
+                                                x: -300,
+                                                opacity: 0,
+                                                scale: 0.5,
+                                            }}
                                             onClick={() =>
                                                 setIsJoin((pre) => !pre)
                                             }
-                                            className={`bg-primary/50 ${css(ButtonStatus)} cursor-not-allowed `}
+                                            className={`bg-primary/50 ${css(
+                                                ButtonStatus
+                                            )} cursor-not-allowed `}
                                         >
                                             <div>
                                                 <FontAwesomeIcon
@@ -110,13 +131,27 @@ const Event: React.FC<Props> = () => {
                                     ) : (
                                         <Button
                                             key={isJoin ? 1 : 0}
-                                            initial={{ x: 300, opacity: 0 }}
-                                            animate={{ x: 0, opacity: 1 }}
-                                            exit={{ x: -300, opacity: 0 }}
+                                            initial={{
+                                                x: 300,
+                                                opacity: 0,
+                                                scale: 0.9,
+                                            }}
+                                            animate={{
+                                                x: 0,
+                                                opacity: 1,
+                                                scale: 1,
+                                            }}
+                                            exit={{
+                                                x: -300,
+                                                opacity: 0,
+                                                scale: 0.5,
+                                            }}
                                             onClick={() =>
                                                 setIsJoin((pre) => !pre)
                                             }
-                                            className={`bg-primary ${css(ButtonStatus)}`}
+                                            className={`bg-primary ${css(
+                                                ButtonStatus
+                                            )}`}
                                         >
                                             <div>
                                                 <FontAwesomeIcon
