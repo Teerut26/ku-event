@@ -21,10 +21,13 @@ const NavigationBar: React.FC<Props> = () => {
                         home
                     </Menu>
                 </NavLink>
-                <Menu className="text-[#9398B0]">
-                    <FontAwesomeIcon className="w-5" icon={faPlus} />
-                    Create
-                </Menu>
+                <NavLink href={"/event/create"}>
+                    <Menu>
+                        <FontAwesomeIcon className="w-5" icon={faPlus} />
+                        Create
+                    </Menu>
+                </NavLink>
+
                 <NavLink href={"/me"}>
                     <Menu>
                         <div className="avatar">
