@@ -10,7 +10,7 @@ const apolloServer = new ApolloServer({
     introspection: true,
     context: ({ req }) => {
         return {
-            user: req,
+            req: req,
         };
     },
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],

@@ -15,8 +15,8 @@ export const resolvers = {
                 throw error;
             }
         },
-        getUser: async (_: any, args: any, req: any) => {
-            console.log(req.httpVersion);
+        getUser: async (_: any, args: any, {req}:{req:NextApiRequest}) => {
+            console.log(req.headers.host);
             try {
                 const user = await axios.get(
                     `https://api.github.com/users/${args.name}`
