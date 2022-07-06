@@ -25,7 +25,7 @@ const NavigationBar: React.FC<Props> = () => {
                     <FontAwesomeIcon className="w-5" icon={faPlus} />
                     Create
                 </Menu>
-                <NavLink href={"/profile"}>
+                <NavLink href={"/me"}>
                     <Menu>
                         <div className="avatar">
                             <div className="w-6">
