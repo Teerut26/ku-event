@@ -17,6 +17,8 @@ import {
     FormatAlignLeft,
     Title as TitleIcon,
 } from "@mui/icons-material";
+import { useSession } from "next-auth/react";
+import ToLogin from "components/Error/ToLogin";
 
 interface Props {}
 
@@ -66,6 +68,15 @@ const EventCreate: React.FC<Props> = () => {
     const handleChange = (newValue: Date | null) => {
         setValue(newValue);
     };
+
+    const { status } = useSession();
+
+    if (status === "unauthenticated") {
+        return <div className="absolute top-0 bottom-0 right-0 left-0 flex flex-col gap-3 justify-center items-center">
+            <div className="font-bold text-xl text-white">Not authenticated</div>
+            <ToLogin />
+        </div>;
+    }
 
     return (
         <WithNavigationBar>

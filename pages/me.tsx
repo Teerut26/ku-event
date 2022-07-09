@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import WithNavigationBar from "layouts/WithNavigationBar";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import React from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import tw from "twin.macro";
@@ -12,6 +12,7 @@ import {
     faSignOut,
     faUser,
 } from "@fortawesome/free-solid-svg-icons";
+import ToLogin from "components/Error/ToLogin";
 
 interface Props {}
 
@@ -29,7 +30,10 @@ const Me: React.FC<Props> = () => {
     const { data: session, status } = useSession();
 
     if (status === "unauthenticated") {
-        return <div>Not authenticated</div>;
+        return <div className="absolute top-0 bottom-0 right-0 left-0 flex flex-col gap-3 justify-center items-center">
+            <div className="font-bold text-xl text-white">Not authenticated</div>
+            <ToLogin />
+        </div>;
     }
 
     return (
@@ -71,21 +75,21 @@ const Me: React.FC<Props> = () => {
                         <div className="flex gap-5 flex-col overflow-y-auto pb-[3.25rem]">
                             <List className="gap-2">
                                 <ListMenu>
-                                    <FontAwesomeIcon icon={faCalendarDays} />
+                                    <FontAwesomeIcon className="w-5" icon={faCalendarDays} />
                                     <div>My Event</div>
                                 </ListMenu>
                             </List>
                             <List className="gap-2">
                                 <ListMenu>
-                                    <FontAwesomeIcon icon={faUser} />
+                                    <FontAwesomeIcon className="w-5" icon={faUser} />
                                     <div>My Profile</div>
                                 </ListMenu>
                                 <ListMenu>
-                                    <FontAwesomeIcon icon={faGear} />
+                                    <FontAwesomeIcon className="w-5" icon={faGear} />
                                     <div>Setting</div>
                                 </ListMenu>
-                                <ListMenu>
-                                    <FontAwesomeIcon icon={faSignOut} />
+                                <ListMenu onClick={()=>signOut()}>
+                                    <FontAwesomeIcon className="w-5" icon={faSignOut} />
                                     <div>Sign Out</div>
                                 </ListMenu>
                             </List>
