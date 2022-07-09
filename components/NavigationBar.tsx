@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
-import { faHomeAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faHomeAlt, faPlus, faSignIn } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSession } from "next-auth/react";
 import React from "react";
 import tw from "twin.macro";
 import NavLink from "./lib/NavLink";
@@ -12,6 +13,7 @@ const Menu = styled.div`
 `;
 
 const NavigationBar: React.FC<Props> = () => {
+    const { data: session, status } = useSession();
     return (
         <div className="fixed z-10 bottom-0 right-0 left-0">
             <div className="max-w-2xl mx-auto flex justify-center items-center bg-white h-[4rem] rounded-t-[1.3rem] shadow-2xl">
@@ -27,20 +29,29 @@ const NavigationBar: React.FC<Props> = () => {
                         Create
                     </Menu>
                 </NavLink>
-
-                <NavLink href={"/me"}>
-                    <Menu>
-                        <div className="avatar">
-                            <div className="w-6">
-                                <img
-                                    className="rounded-full"
-                                    src="https://placeimg.com/192/192/people"
-                                />
+                {status === "authenticated" ? (
+                    <NavLink href={"/me"}>
+                        <Menu>
+                            <div className="avatar">
+                                <div className="w-6">
+                                    <img
+                                        className="rounded-full"
+                                        src={session.user?.image!}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        Profile
-                    </Menu>
-                </NavLink>
+                            Profile
+                        </Menu>
+                    </NavLink>
+                ) : (
+                    <NavLink href={"/sign-in"}>
+                        <Menu>
+                            <FontAwesomeIcon className="w-5" icon={faSignIn} />
+                            Sign In
+                        </Menu>
+                    </NavLink>
+                )}
+                {/*  */}
             </div>
         </div>
     );

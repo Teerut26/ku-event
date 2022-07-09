@@ -134,7 +134,7 @@ const EventCreate: React.FC<Props> = () => {
                                     </Box>
                                     <Box sx={boxConfig}>
                                         <ShowOnSm>
-                                            <CalendarMonth sx={iconConfig} />
+                                            <AccessTime sx={iconConfig} />
                                         </ShowOnSm>
                                         <TimePicker
                                             label="Starts At "
