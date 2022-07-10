@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import WithNavigationBar from "layouts/WithNavigationBar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import {
     DatePicker,
@@ -21,6 +21,7 @@ import { useSession } from "next-auth/react";
 import ToLogin from "components/Error/ToLogin";
 import Upload from "components/Create/Upload";
 import { ImageListType } from "react-images-uploading";
+import { Event } from "interface/database.interface";
 
 interface Props {}
 
@@ -77,14 +78,38 @@ const boxConfig = {
 };
 
 const EventCreate: React.FC<Props> = () => {
-    const [value, setValue] = React.useState<Date | null>(
-        new Date("2014-08-18T21:11:54")
-    );
+    const [FormCreateEvent, setFormCreateEvent] = useState<Event>({
+        title: "",
+        detail: "",
+        startTime: new Date().toISOString(),
+        endTime: new Date().toISOString(),
+        place: "",
+        image: [],
+    });
 
-    const [images, setImages] = React.useState<ImageListType>([]);
+    const handleChangeStartTime = (newValue: Date | null) => {
+        if (!newValue) return;
+        setFormCreateEvent((pre) => ({
+            ...pre,
+            startTime: newValue?.toISOString(),
+        }));
+    };
 
-    const handleChange = (newValue: Date | null) => {
-        setValue(newValue);
+    const handleChangeEndTime = (newValue: Date | null) => {
+        if (!newValue) return;
+        setFormCreateEvent((pre) => ({
+            ...pre,
+            endTime: newValue?.toISOString(),
+        }));
+    };
+
+    useEffect(() => {
+        console.log(FormCreateEvent);
+    }, [FormCreateEvent]);
+
+    const onSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log(FormCreateEvent);
     };
 
     const { status } = useSession();
@@ -104,7 +129,10 @@ const EventCreate: React.FC<Props> = () => {
         <WithNavigationBar>
             <ThemeProvider theme={textField}>
                 <div className="absolute top-0 bottom-0 right-0 left-0">
-                    <div className="max-w-2xl h-full mx-auto flex flex-col gap-5 bg-white text-black p-5 overflow-y-auto pb-[5.25rem]">
+                    <form
+                        onSubmit={onSubmit}
+                        className="max-w-2xl h-full mx-auto flex flex-col gap-5 bg-white text-black p-5 overflow-y-auto pb-[5.25rem]"
+                    >
                         <div className="text-xl font-bold">Event Create</div>
                         <GroupForm className="flex-col gap-2">
                             <Title>Event Details</Title>
@@ -115,6 +143,12 @@ const EventCreate: React.FC<Props> = () => {
                                     sx={{
                                         width: "100%",
                                     }}
+                                    onChange={(e) =>
+                                        setFormCreateEvent((pre) => ({
+                                            ...pre,
+                                            title: e.target.value,
+                                        }))
+                                    }
                                     label="Event Title"
                                     variant="standard"
                                 />
@@ -123,6 +157,12 @@ const EventCreate: React.FC<Props> = () => {
                                 <FormatAlignLeft sx={iconConfig} />
                                 <TextField
                                     label="Event Detail"
+                                    onChange={(e) =>
+                                        setFormCreateEvent((pre) => ({
+                                            ...pre,
+                                            detail: e.target.value,
+                                        }))
+                                    }
                                     variant="standard"
                                     sx={{
                                         width: "100%",
@@ -133,6 +173,12 @@ const EventCreate: React.FC<Props> = () => {
                                 <PinDrop sx={iconConfig} />
                                 <TextField
                                     label="Place"
+                                    onChange={(e) =>
+                                        setFormCreateEvent((pre) => ({
+                                            ...pre,
+                                            place: e.target.value,
+                                        }))
+                                    }
                                     variant="standard"
                                     sx={{
                                         width: "100%",
@@ -152,8 +198,8 @@ const EventCreate: React.FC<Props> = () => {
                                         <DatePicker
                                             label="Date"
                                             inputFormat="MM/dd/yyyy"
-                                            value={value}
-                                            onChange={handleChange}
+                                            value={FormCreateEvent.startTime}
+                                            onChange={handleChangeStartTime}
                                             renderInput={(params) => (
                                                 <TextField
                                                     sx={{
@@ -171,8 +217,8 @@ const EventCreate: React.FC<Props> = () => {
                                         </ShowOnSm>
                                         <TimePicker
                                             label="Starts At "
-                                            value={value}
-                                            onChange={handleChange}
+                                            value={FormCreateEvent.startTime}
+                                            onChange={handleChangeStartTime}
                                             renderInput={(params) => (
                                                 <TextField
                                                     sx={{
@@ -199,8 +245,8 @@ const EventCreate: React.FC<Props> = () => {
                                         <DatePicker
                                             label="Date"
                                             inputFormat="MM/dd/yyyy"
-                                            value={value}
-                                            onChange={handleChange}
+                                            value={FormCreateEvent.endTime}
+                                            onChange={handleChangeEndTime}
                                             renderInput={(params) => (
                                                 <TextField
                                                     sx={{
@@ -218,8 +264,8 @@ const EventCreate: React.FC<Props> = () => {
                                         </ShowOnSm>
                                         <TimePicker
                                             label="Starts At "
-                                            value={value}
-                                            onChange={handleChange}
+                                            value={FormCreateEvent.endTime}
+                                            onChange={handleChangeEndTime}
                                             renderInput={(params) => (
                                                 <TextField
                                                     sx={{
@@ -236,7 +282,16 @@ const EventCreate: React.FC<Props> = () => {
                         </GroupForm>
                         <GroupForm className="flex-col gap-2">
                             <Title>Image Upload</Title>
-                            <Upload onUpload={(image) => setImages(image)} />
+                            <Upload
+                                onUpload={(image) =>
+                                    setFormCreateEvent((pre) => ({
+                                        ...pre,
+                                        image: [
+                                            ...image.map((i) => i.dataURL!),
+                                        ],
+                                    }))
+                                }
+                            />
                         </GroupForm>
                         <GroupForm className="flex-col gap-2">
                             {false ? (
@@ -248,12 +303,15 @@ const EventCreate: React.FC<Props> = () => {
                                     </ThemeProvider>
                                 </button>
                             ) : (
-                                <button className="btn btn-primary">
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                >
                                     Create Event
                                 </button>
                             )}
                         </GroupForm>
-                    </div>
+                    </form>
                 </div>
             </ThemeProvider>
         </WithNavigationBar>
