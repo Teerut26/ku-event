@@ -7,8 +7,33 @@ export const typeDefs = gql`
         avatar_url: String
     }
 
+    type Event {
+        id: String
+        title: String
+        detail: String
+        startTime: String
+        endTime: String
+        place: String
+        image: [String]
+    }
+
+    input EventInput {
+        title: String
+        detail: String
+        startTime: String
+        endTime: String
+        place: String
+        image: [String]
+    }
+
     type Query {
-        getUsers: [User]
-        getUser(name: String!): User!
+        getEvents: [Event]
+        getEvent(id: String!, limit: String, after: String): Event
+    }
+
+    type Mutation {
+        createEvent(input: EventInput): Event
+        updateEvent(id: String!, input: EventInput): Event
+        deleteEvent(id: String!): Event
     }
 `;
