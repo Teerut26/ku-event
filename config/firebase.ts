@@ -1,13 +1,16 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
-import { getDatabase } from "firebase/database";
+import admin from "firebase-admin";
 
-const firebaseConfig = JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG!); 
+const serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_CONFIG as string);
+const config = {
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+};
+let firebaseAdmin: admin.app.App;
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const firestore = getFirestore(app);
-const database = getDatabase(app);
+if (!admin.apps.length) {
+    firebaseAdmin = admin.initializeApp(config);
+} else {
+    firebaseAdmin = admin.app();
+}
 
-export { analytics, firestore, database };
+export default firebaseAdmin;
