@@ -1,5 +1,6 @@
 import axios from "axios";
-import { NextApiRequest } from "next";
+import { ResolversParam } from "interface/resolvers-param.interface";
+import CheckToken from "lib/checkToken";
 
 export const resolvers = {
     Query: {
@@ -15,9 +16,9 @@ export const resolvers = {
                 throw error;
             }
         },
-        getUser: async (_: any, args: any, req: any) => {
-            console.log(req.httpVersion);
+        getUser: async (_: any, args: any, { req, token }: ResolversParam) => {
             try {
+                CheckToken(token);
                 const user = await axios.get(
                     `https://api.github.com/users/${args.name}`
                 );
