@@ -1,7 +1,7 @@
-import { Box, Button, CircularProgress, TextField } from "@mui/material";
+import { Box, CircularProgress, TextField } from "@mui/material";
 import WithNavigationBar from "layouts/WithNavigationBar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import {
     DatePicker,
@@ -20,8 +20,9 @@ import {
 import { useSession } from "next-auth/react";
 import ToLogin from "components/Error/ToLogin";
 import Upload from "components/Create/Upload";
-import { ImageListType } from "react-images-uploading";
 import { Event } from "interface/database.interface";
+import { useMutation } from "@apollo/client";
+import CREATE_EVENT from "gql/event/create.event";
 
 interface Props {}
 
@@ -78,6 +79,19 @@ const boxConfig = {
 };
 
 const EventCreate: React.FC<Props> = () => {
+    const { status } = useSession();
+
+    if (status === "unauthenticated") {
+        return (
+            <div className="absolute top-0 bottom-0 right-0 left-0 flex flex-col gap-3 justify-center items-center">
+                <div className="font-bold text-xl text-white">
+                    Not authenticated
+                </div>
+                <ToLogin />
+            </div>
+        );
+    }
+
     const [FormCreateEvent, setFormCreateEvent] = useState<Event>({
         title: "",
         detail: "",
@@ -103,27 +117,16 @@ const EventCreate: React.FC<Props> = () => {
         }));
     };
 
-    useEffect(() => {
-        console.log(FormCreateEvent);
-    }, [FormCreateEvent]);
+    const [createEvent] = useMutation(CREATE_EVENT);
 
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(FormCreateEvent);
+        await createEvent({
+            variables: {
+                input: FormCreateEvent,
+            },
+        });
     };
-
-    const { status } = useSession();
-
-    if (status === "unauthenticated") {
-        return (
-            <div className="absolute top-0 bottom-0 right-0 left-0 flex flex-col gap-3 justify-center items-center">
-                <div className="font-bold text-xl text-white">
-                    Not authenticated
-                </div>
-                <ToLogin />
-            </div>
-        );
-    }
 
     return (
         <WithNavigationBar>

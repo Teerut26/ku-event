@@ -5,6 +5,13 @@ import { getToken } from "next-auth/jwt";
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./schemas";
 
+export const config = {
+    api: {
+        sizeLimit: "5mb",
+        bodyParser: false,
+    },
+};
+
 const apolloServer = new ApolloServer({
     typeDefs: typeDefs,
     resolvers: resolvers,
@@ -33,9 +40,3 @@ export default async function handler(
         path: "/api/graphql",
     })(req, res);
 }
-
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};

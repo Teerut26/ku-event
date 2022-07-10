@@ -16,7 +16,7 @@ const DropArea = styled.div(
 
 const Upload: React.FC<Props> = ({ onUpload }) => {
     const [images, setImages] = React.useState<ImageListType>([]);
-    const maxNumber = 3;
+    const maxNumber = 5;
 
     const onChange = (
         imageList: ImageListType,

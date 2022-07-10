@@ -4,6 +4,7 @@ import Head from "next/head";
 import { wrapper } from "../store";
 import { SessionProvider } from "next-auth/react";
 import React from "react";
+import GraphqlProvider from "components/GraphqlProvider";
 
 const MyApp: React.FC<AppProps> = ({
     Component,
@@ -17,7 +18,9 @@ const MyApp: React.FC<AppProps> = ({
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <SessionProvider session={session}>
-                <Component {...pageProps} />
+                <GraphqlProvider>
+                    <Component {...pageProps} />
+                </GraphqlProvider>
             </SessionProvider>
         </>
     );
