@@ -27,20 +27,11 @@ module.exports = {
                     success: "#7AE6A7",
                     warning: "#B69907",
                     error: "#F52E69",
-                },
-                theme2: {
-                    primary: "#d86c71",
-                    secondary: "#e8968d",
-                    accent: "#a359db",
-                    neutral: "#24242E",
-                    "base-100": "#EEE7F3",
-                    info: "#5779F4",
-                    success: "#0F6C48",
-                    warning: "#FCC136",
-                    error: "#EC4B66",
-                },
+                }
             },
         ],
     },
-    plugins: [require("daisyui")],
+    plugins: [
+        require("daisyui")
+    ],
 };

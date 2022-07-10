@@ -1,4 +1,4 @@
-import { Box, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import WithNavigationBar from "layouts/WithNavigationBar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React from "react";
@@ -19,6 +19,8 @@ import {
 } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import ToLogin from "components/Error/ToLogin";
+import Upload from "components/Create/Upload";
+import { ImageListType } from "react-images-uploading";
 
 interface Props {}
 
@@ -26,6 +28,20 @@ const textField = createTheme({
     palette: {
         primary: {
             main: "#4ADE80",
+        },
+    },
+    shape: {
+        borderRadius: "1rem",
+    },
+    typography: {
+        fontFamily: "Prompt",
+    },
+});
+
+const circularProgressTheme = createTheme({
+    palette: {
+        primary: {
+            main: "#ffffff",
         },
     },
     shape: {
@@ -65,6 +81,8 @@ const EventCreate: React.FC<Props> = () => {
         new Date("2014-08-18T21:11:54")
     );
 
+    const [images, setImages] = React.useState<ImageListType>([]);
+
     const handleChange = (newValue: Date | null) => {
         setValue(newValue);
     };
@@ -72,10 +90,14 @@ const EventCreate: React.FC<Props> = () => {
     const { status } = useSession();
 
     if (status === "unauthenticated") {
-        return <div className="absolute top-0 bottom-0 right-0 left-0 flex flex-col gap-3 justify-center items-center">
-            <div className="font-bold text-xl text-white">Not authenticated</div>
-            <ToLogin />
-        </div>;
+        return (
+            <div className="absolute top-0 bottom-0 right-0 left-0 flex flex-col gap-3 justify-center items-center">
+                <div className="font-bold text-xl text-white">
+                    Not authenticated
+                </div>
+                <ToLogin />
+            </div>
+        );
     }
 
     return (
@@ -211,6 +233,25 @@ const EventCreate: React.FC<Props> = () => {
                                     </Box>
                                 </div>
                             </LocalizationProvider>
+                        </GroupForm>
+                        <GroupForm className="flex-col gap-2">
+                            <Title>Image Upload</Title>
+                            <Upload onUpload={(image) => setImages(image)} />
+                        </GroupForm>
+                        <GroupForm className="flex-col gap-2">
+                            {false ? (
+                                <button disabled className="btn btn-primary">
+                                    <ThemeProvider
+                                        theme={circularProgressTheme}
+                                    >
+                                        <CircularProgress size={25} />
+                                    </ThemeProvider>
+                                </button>
+                            ) : (
+                                <button className="btn btn-primary">
+                                    Create Event
+                                </button>
+                            )}
                         </GroupForm>
                     </div>
                 </div>
